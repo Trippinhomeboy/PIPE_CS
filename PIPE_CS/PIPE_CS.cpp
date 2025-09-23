@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <string>
 #include <limits>
+#include <fstream>
 
 using namespace std;
 
@@ -179,6 +180,61 @@ void editCs(Cs& cs) {
     }
 }
 
+void saveToFile(const Pipe& pipe, const Cs& cs, const string& filename = "data.txt") {
+    ofstream file(filename);
+    if (!file.is_open()) {
+        cout << "Ошибка: Не удалось открыть файл для записи." << endl;
+        return;
+    }
+
+    if (!pipe.name.empty()) {
+        file << "PIPE" << endl;
+        file << pipe.name << endl;
+        file << pipe.length << endl;
+        file << pipe.diameter << endl;
+        file << pipe.isUnderRepair << endl;
+    }
+
+    if (!cs.name.empty()) {
+        file << "CS" << endl;
+        file << cs.name << endl;
+        file << cs.totalWorkshops << endl;
+        file << cs.workingWorkshops << endl;
+        file << cs.efficiency << endl;
+    }
+
+    file.close();
+    cout << "Данные успешно сохранены в файл '" << filename << "'." << endl;
+}
+
+void loadFromFile(Pipe& pipe, Cs& cs, const string& filename = "data.txt") {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Ошибка: Не удалось открыть файл для чтения." << endl;
+        return;
+    }
+
+    string line;
+    pipe.name = "";
+    cs.name = "";
+
+    while (getline(file, line)) {
+        if (line == "PIPE") {
+            getline(file, pipe.name);
+            file >> pipe.length >> pipe.diameter >> pipe.isUnderRepair;
+            file.ignore();
+        }
+        else if (line == "CS") {
+            getline(file, cs.name);
+            file >> cs.totalWorkshops >> cs.workingWorkshops >> cs.efficiency;
+            file.ignore();
+        }
+    }
+
+    file.close();
+    cout << "Данные успешно загружены из файла '" << filename << "'." << endl;
+}
+
 void displayMenu() {
     cout << "\n================================" << endl;
     cout << "             МЕНЮ" << endl;
@@ -219,6 +275,12 @@ int main() {
             break;
         case 5:
             editCs(myCs);
+            break;
+        case 6:
+            saveToFile(myPipe, myCs);
+            break;
+        case 7:
+            loadFromFile(myPipe, myCs);
             break;
         case 0:
             cout << "Выход из программы." << endl;
