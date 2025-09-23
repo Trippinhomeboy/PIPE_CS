@@ -109,6 +109,76 @@ void displayAllObjects(const Pipe& pipe, const Cs& cs) {
     cout << "--------------------------------" << endl;
 }
 
+void editPipe(Pipe& pipe) {
+    if (pipe.name.empty()) {
+        cout << "Ошибка: Сначала создайте трубу." << endl;
+        return;
+    }
+    cout << "\n=== Редактирование трубы '" << pipe.name << "' ===" << endl;
+    cout << "Текущий статус ремонта: " << (pipe.isUnderRepair ? "Да" : "Нет") << endl;
+    cout << "1. Включить ремонт" << endl;
+    cout << "2. Выключить ремонт" << endl;
+    cout << "0. Отмена" << endl;
+
+    int choice = getValidInput<int>("Выберите действие: ");
+
+    switch (choice) {
+    case 1:
+        pipe.isUnderRepair = true;
+        cout << "Ремонт включен." << endl;
+        break;
+    case 2:
+        pipe.isUnderRepair = false;
+        cout << "Ремонт выключен." << endl;
+        break;
+    case 0:
+        cout << "Отмена." << endl;
+        break;
+    default:
+        cout << "Неверный выбор." << endl;
+    }
+}
+
+void editCs(Cs& cs) {
+    if (cs.name.empty()) {
+        cout << "Ошибка: Сначала создайте КС." << endl;
+        return;
+    }
+    cout << "\n=== Редактирование КС '" << cs.name << "' ===" << endl;
+    cout << "Цехов в работе: " << cs.workingWorkshops << " из " << cs.totalWorkshops << endl;
+    cout << "1. Запустить цех" << endl;
+    cout << "2. Остановить цех" << endl;
+    cout << "0. Отмена" << endl;
+
+    int choice = getValidInput<int>("Выберите действие: ");
+
+    switch (choice) {
+    case 1:
+        if (cs.workingWorkshops < cs.totalWorkshops) {
+            cs.workingWorkshops++;
+            cout << "Цех запущен. Теперь работает " << cs.workingWorkshops << " цехов." << endl;
+        }
+        else {
+            cout << "Ошибка: Все цехи уже работают." << endl;
+        }
+        break;
+    case 2:
+        if (cs.workingWorkshops > 0) {
+            cs.workingWorkshops--;
+            cout << "Цех остановлен. Теперь работает " << cs.workingWorkshops << " цехов." << endl;
+        }
+        else {
+            cout << "Ошибка: Нет работающих цехов для остановки." << endl;
+        }
+        break;
+    case 0:
+        cout << "Отмена." << endl;
+        break;
+    default:
+        cout << "Неверный выбор." << endl;
+    }
+}
+
 void displayMenu() {
     cout << "\n================================" << endl;
     cout << "             МЕНЮ" << endl;
@@ -143,6 +213,12 @@ int main() {
             break;
         case 3:
             displayAllObjects(myPipe, myCs);
+            break;
+        case 4:
+            editPipe(myPipe);
+            break;
+        case 5:
+            editCs(myCs);
             break;
         case 0:
             cout << "Выход из программы." << endl;
