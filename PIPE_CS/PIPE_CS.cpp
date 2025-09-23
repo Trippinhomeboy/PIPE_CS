@@ -28,7 +28,7 @@ T getValidInput(const string& prompt) {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Ошибка: Введите корректное число.\n";
+            cout << "Error: Enter a valid number.\n";
         }
         else {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -38,152 +38,152 @@ T getValidInput(const string& prompt) {
 }
 
 void createPipe(Pipe& pipe) {
-    cout << "\n=== Добавление новой трубы ===" << endl;
-    cout << "Введите название трубы: ";
+    cout << "\n=== Add New Pipe ===" << endl;
+    cout << "Enter pipe name: ";
     getline(cin, pipe.name);
 
-    pipe.length = getValidInput<double>("Введите длину трубы (км): ");
+    pipe.length = getValidInput<double>("Enter pipe length (km): ");
     while (pipe.length <= 0) {
-        cout << "Длина должна быть положительной. Попробуйте снова.\n";
-        pipe.length = getValidInput<double>("Введите длину трубы (км): ");
+        cout << "Length must be positive. Try again.\n";
+        pipe.length = getValidInput<double>("Enter pipe length (km): ");
     }
 
-    pipe.diameter = getValidInput<double>("Введите диаметр трубы (мм): ");
+    pipe.diameter = getValidInput<double>("Enter pipe diameter (mm): ");
     while (pipe.diameter <= 0) {
-        cout << "Диаметр должен быть положительным. Попробуйте снова.\n";
-        pipe.diameter = getValidInput<double>("Введите диаметр трубы (мм): ");
+        cout << "Diameter must be positive. Try again.\n";
+        pipe.diameter = getValidInput<double>("Enter pipe diameter (mm): ");
     }
 
     pipe.isUnderRepair = false;
-    cout << "Труба '" << pipe.name << "' успешно добавлена!\n" << endl;
+    cout << "Pipe '" << pipe.name << "' added successfully!\n" << endl;
 }
 
 void createCs(Cs& cs) {
-    cout << "\n=== Добавление новой Компрессорной Станции (КС) ===" << endl;
-    cout << "Введите название КС: ";
+    cout << "\n=== Add New Compressor Station ===" << endl;
+    cout << "Enter station name: ";
     getline(cin, cs.name);
 
-    cs.totalWorkshops = getValidInput<int>("Введите общее количество цехов: ");
+    cs.totalWorkshops = getValidInput<int>("Enter total workshops: ");
     while (cs.totalWorkshops <= 0) {
-        cout << "Количество цехов должно быть положительным. Попробуйте снова.\n";
-        cs.totalWorkshops = getValidInput<int>("Введите общее количество цехов: ");
+        cout << "Number must be positive. Try again.\n";
+        cs.totalWorkshops = getValidInput<int>("Enter total workshops: ");
     }
 
-    cs.workingWorkshops = getValidInput<int>("Введите количество цехов в работе: ");
+    cs.workingWorkshops = getValidInput<int>("Enter working workshops: ");
     while (cs.workingWorkshops < 0 || cs.workingWorkshops > cs.totalWorkshops) {
-        cout << "Количество рабочих цехов не может быть отрицательным или превышать общее количество. Попробуйте снова.\n";
-        cs.workingWorkshops = getValidInput<int>("Введите количество цехов в работе: ");
+        cout << "Working workshops cannot be negative or exceed total. Try again.\n";
+        cs.workingWorkshops = getValidInput<int>("Enter working workshops: ");
     }
 
-    cs.efficiency = getValidInput<double>("Введите эффективность КС (%): ");
+    cs.efficiency = getValidInput<double>("Enter efficiency (%): ");
     while (cs.efficiency < 0 || cs.efficiency > 100) {
-        cout << "Эффективность должна быть в диапазоне от 0 до 100%. Попробуйте снова.\n";
-        cs.efficiency = getValidInput<double>("Введите эффективность КС (%): ");
+        cout << "Efficiency must be between 0 and 100%. Try again.\n";
+        cs.efficiency = getValidInput<double>("Enter efficiency (%): ");
     }
-    cout << "КС '" << cs.name << "' успешно добавлена!\n" << endl;
+    cout << "Station '" << cs.name << "' added successfully!\n" << endl;
 }
 
 void displayAllObjects(const Pipe& pipe, const Cs& cs) {
-    cout << "\n=== ПРОСМОТР ВСЕХ ОБЪЕКТОВ ===" << endl;
+    cout << "\n=== ALL OBJECTS ===" << endl;
 
-    cout << "--- Труба ---" << endl;
+    cout << "--- Pipe ---" << endl;
     if (pipe.name.empty()) {
-        cout << "Труба не создана." << endl;
+        cout << "No pipe created." << endl;
     }
     else {
-        cout << "Название: " << pipe.name << endl;
-        cout << "Длина: " << pipe.length << " км" << endl;
-        cout << "Диаметр: " << pipe.diameter << " мм" << endl;
-        cout << "В ремонте: " << (pipe.isUnderRepair ? "Да" : "Нет") << endl;
+        cout << "Name: " << pipe.name << endl;
+        cout << "Length: " << pipe.length << " km" << endl;
+        cout << "Diameter: " << pipe.diameter << " mm" << endl;
+        cout << "Under repair: " << (pipe.isUnderRepair ? "Yes" : "No") << endl;
     }
 
-    cout << "\n--- Компрессорная Станция (КС) ---" << endl;
+    cout << "\n--- Compressor Station ---" << endl;
     if (cs.name.empty()) {
-        cout << "КС не создана." << endl;
+        cout << "No station created." << endl;
     }
     else {
-        cout << "Название: " << cs.name << endl;
-        cout << "Всего цехов: " << cs.totalWorkshops << endl;
-        cout << "Цехов в работе: " << cs.workingWorkshops << endl;
-        cout << "Эффективность: " << cs.efficiency << " %" << endl;
+        cout << "Name: " << cs.name << endl;
+        cout << "Total workshops: " << cs.totalWorkshops << endl;
+        cout << "Working workshops: " << cs.workingWorkshops << endl;
+        cout << "Efficiency: " << cs.efficiency << " %" << endl;
     }
     cout << "--------------------------------" << endl;
 }
 
 void editPipe(Pipe& pipe) {
     if (pipe.name.empty()) {
-        cout << "Ошибка: Сначала создайте трубу." << endl;
+        cout << "Error: Create a pipe first." << endl;
         return;
     }
-    cout << "\n=== Редактирование трубы '" << pipe.name << "' ===" << endl;
-    cout << "Текущий статус ремонта: " << (pipe.isUnderRepair ? "Да" : "Нет") << endl;
-    cout << "1. Включить ремонт" << endl;
-    cout << "2. Выключить ремонт" << endl;
-    cout << "0. Отмена" << endl;
+    cout << "\n=== Edit Pipe '" << pipe.name << "' ===" << endl;
+    cout << "Current repair status: " << (pipe.isUnderRepair ? "Yes" : "No") << endl;
+    cout << "1. Start repair" << endl;
+    cout << "2. Stop repair" << endl;
+    cout << "0. Cancel" << endl;
 
-    int choice = getValidInput<int>("Выберите действие: ");
+    int choice = getValidInput<int>("Select action: ");
 
     switch (choice) {
     case 1:
         pipe.isUnderRepair = true;
-        cout << "Ремонт включен." << endl;
+        cout << "Repair started." << endl;
         break;
     case 2:
         pipe.isUnderRepair = false;
-        cout << "Ремонт выключен." << endl;
+        cout << "Repair stopped." << endl;
         break;
     case 0:
-        cout << "Отмена." << endl;
+        cout << "Canceled." << endl;
         break;
     default:
-        cout << "Неверный выбор." << endl;
+        cout << "Invalid choice." << endl;
     }
 }
 
 void editCs(Cs& cs) {
     if (cs.name.empty()) {
-        cout << "Ошибка: Сначала создайте КС." << endl;
+        cout << "Error: Create a station first." << endl;
         return;
     }
-    cout << "\n=== Редактирование КС '" << cs.name << "' ===" << endl;
-    cout << "Цехов в работе: " << cs.workingWorkshops << " из " << cs.totalWorkshops << endl;
-    cout << "1. Запустить цех" << endl;
-    cout << "2. Остановить цех" << endl;
-    cout << "0. Отмена" << endl;
+    cout << "\n=== Edit Station '" << cs.name << "' ===" << endl;
+    cout << "Working workshops: " << cs.workingWorkshops << " of " << cs.totalWorkshops << endl;
+    cout << "1. Start workshop" << endl;
+    cout << "2. Stop workshop" << endl;
+    cout << "0. Cancel" << endl;
 
-    int choice = getValidInput<int>("Выберите действие: ");
+    int choice = getValidInput<int>("Select action: ");
 
     switch (choice) {
     case 1:
         if (cs.workingWorkshops < cs.totalWorkshops) {
             cs.workingWorkshops++;
-            cout << "Цех запущен. Теперь работает " << cs.workingWorkshops << " цехов." << endl;
+            cout << "Workshop started. Now working: " << cs.workingWorkshops << " workshops." << endl;
         }
         else {
-            cout << "Ошибка: Все цехи уже работают." << endl;
+            cout << "Error: All workshops are already working." << endl;
         }
         break;
     case 2:
         if (cs.workingWorkshops > 0) {
             cs.workingWorkshops--;
-            cout << "Цех остановлен. Теперь работает " << cs.workingWorkshops << " цехов." << endl;
+            cout << "Workshop stopped. Now working: " << cs.workingWorkshops << " workshops." << endl;
         }
         else {
-            cout << "Ошибка: Нет работающих цехов для остановки." << endl;
+            cout << "Error: No working workshops to stop." << endl;
         }
         break;
     case 0:
-        cout << "Отмена." << endl;
+        cout << "Canceled." << endl;
         break;
     default:
-        cout << "Неверный выбор." << endl;
+        cout << "Invalid choice." << endl;
     }
 }
 
 void saveToFile(const Pipe& pipe, const Cs& cs, const string& filename = "data.txt") {
     ofstream file(filename);
     if (!file.is_open()) {
-        cout << "Ошибка: Не удалось открыть файл для записи." << endl;
+        cout << "Error: Cannot open file for writing." << endl;
         return;
     }
 
@@ -204,13 +204,13 @@ void saveToFile(const Pipe& pipe, const Cs& cs, const string& filename = "data.t
     }
 
     file.close();
-    cout << "Данные успешно сохранены в файл '" << filename << "'." << endl;
+    cout << "Data saved to file '" << filename << "'." << endl;
 }
 
 void loadFromFile(Pipe& pipe, Cs& cs, const string& filename = "data.txt") {
     ifstream file(filename);
     if (!file.is_open()) {
-        cout << "Ошибка: Не удалось открыть файл для чтения." << endl;
+        cout << "Error: Cannot open file for reading." << endl;
         return;
     }
 
@@ -232,23 +232,23 @@ void loadFromFile(Pipe& pipe, Cs& cs, const string& filename = "data.txt") {
     }
 
     file.close();
-    cout << "Данные успешно загружены из файла '" << filename << "'." << endl;
+    cout << "Data loaded from file '" << filename << "'." << endl;
 }
 
 void displayMenu() {
     cout << "\n================================" << endl;
-    cout << "             МЕНЮ" << endl;
+    cout << "             MENU" << endl;
     cout << "================================" << endl;
-    cout << "1. Добавить трубу" << endl;
-    cout << "2. Добавить КС" << endl;
-    cout << "3. Просмотр всех объектов" << endl;
-    cout << "4. Редактировать трубу" << endl;
-    cout << "5. Редактировать КС" << endl;
-    cout << "6. Сохранить" << endl;
-    cout << "7. Загрузить" << endl;
-    cout << "0. Выход" << endl;
+    cout << "1. Add pipe" << endl;
+    cout << "2. Add station" << endl;
+    cout << "3. View all objects" << endl;
+    cout << "4. Edit pipe" << endl;
+    cout << "5. Edit station" << endl;
+    cout << "6. Save" << endl;
+    cout << "7. Load" << endl;
+    cout << "0. Exit" << endl;
     cout << "================================" << endl;
-    cout << "Введите номер команды: ";
+    cout << "Enter command number: ";
 }
 
 void processCommand(int command, Pipe& pipe, Cs& cs) {
@@ -275,10 +275,10 @@ void processCommand(int command, Pipe& pipe, Cs& cs) {
         loadFromFile(pipe, cs);
         break;
     case 0:
-        cout << "Выход из программы." << endl;
+        cout << "Exit program." << endl;
         exit(0);
     default:
-        cout << "Команда не распознана. Пожалуйста, выберите пункт из меню." << endl;
+        cout << "Command not recognized. Please select from menu." << endl;
     }
 }
 
