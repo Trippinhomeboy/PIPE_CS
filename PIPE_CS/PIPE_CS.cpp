@@ -57,6 +57,58 @@ void createPipe(Pipe& pipe) {
     cout << "Труба '" << pipe.name << "' успешно добавлена!\n" << endl;
 }
 
+void createCs(Cs& cs) {
+    cout << "\n=== Добавление новой Компрессорной Станции (КС) ===" << endl;
+    cout << "Введите название КС: ";
+    getline(cin, cs.name);
+
+    cs.totalWorkshops = getValidInput<int>("Введите общее количество цехов: ");
+    while (cs.totalWorkshops <= 0) {
+        cout << "Количество цехов должно быть положительным. Попробуйте снова.\n";
+        cs.totalWorkshops = getValidInput<int>("Введите общее количество цехов: ");
+    }
+
+    cs.workingWorkshops = getValidInput<int>("Введите количество цехов в работе: ");
+    while (cs.workingWorkshops < 0 || cs.workingWorkshops > cs.totalWorkshops) {
+        cout << "Количество рабочих цехов не может быть отрицательным или превышать общее количество. Попробуйте снова.\n";
+        cs.workingWorkshops = getValidInput<int>("Введите количество цехов в работе: ");
+    }
+
+    cs.efficiency = getValidInput<double>("Введите эффективность КС (%): ");
+    while (cs.efficiency < 0 || cs.efficiency > 100) {
+        cout << "Эффективность должна быть в диапазоне от 0 до 100%. Попробуйте снова.\n";
+        cs.efficiency = getValidInput<double>("Введите эффективность КС (%): ");
+    }
+    cout << "КС '" << cs.name << "' успешно добавлена!\n" << endl;
+}
+
+void displayAllObjects(const Pipe& pipe, const Cs& cs) {
+    cout << "\n=== ПРОСМОТР ВСЕХ ОБЪЕКТОВ ===" << endl;
+
+    cout << "--- Труба ---" << endl;
+    if (pipe.name.empty()) {
+        cout << "Труба не создана." << endl;
+    }
+    else {
+        cout << "Название: " << pipe.name << endl;
+        cout << "Длина: " << pipe.length << " км" << endl;
+        cout << "Диаметр: " << pipe.diameter << " мм" << endl;
+        cout << "В ремонте: " << (pipe.isUnderRepair ? "Да" : "Нет") << endl;
+    }
+
+    cout << "\n--- Компрессорная Станция (КС) ---" << endl;
+    if (cs.name.empty()) {
+        cout << "КС не создана." << endl;
+    }
+    else {
+        cout << "Название: " << cs.name << endl;
+        cout << "Всего цехов: " << cs.totalWorkshops << endl;
+        cout << "Цехов в работе: " << cs.workingWorkshops << endl;
+        cout << "Эффективность: " << cs.efficiency << " %" << endl;
+    }
+    cout << "--------------------------------" << endl;
+}
+
 void displayMenu() {
     cout << "\n================================" << endl;
     cout << "             МЕНЮ" << endl;
@@ -85,6 +137,12 @@ int main() {
         switch (command) {
         case 1:
             createPipe(myPipe);
+            break;
+        case 2:
+            createCs(myCs);
+            break;
+        case 3:
+            displayAllObjects(myPipe, myCs);
             break;
         case 0:
             cout << "Выход из программы." << endl;
