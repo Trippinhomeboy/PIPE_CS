@@ -251,42 +251,44 @@ void displayMenu() {
     cout << "Введите номер команды: ";
 }
 
+void processCommand(int command, Pipe& pipe, Cs& cs) {
+    switch (command) {
+    case 1:
+        createPipe(pipe);
+        break;
+    case 2:
+        createCs(cs);
+        break;
+    case 3:
+        displayAllObjects(pipe, cs);
+        break;
+    case 4:
+        editPipe(pipe);
+        break;
+    case 5:
+        editCs(cs);
+        break;
+    case 6:
+        saveToFile(pipe, cs);
+        break;
+    case 7:
+        loadFromFile(pipe, cs);
+        break;
+    case 0:
+        cout << "Выход из программы." << endl;
+        exit(0);
+    default:
+        cout << "Команда не распознана. Пожалуйста, выберите пункт из меню." << endl;
+    }
+}
+
 int main() {
     Pipe myPipe;
     Cs myCs;
-    int command;
 
     while (true) {
         displayMenu();
-        command = getValidInput<int>("");
-
-        switch (command) {
-        case 1:
-            createPipe(myPipe);
-            break;
-        case 2:
-            createCs(myCs);
-            break;
-        case 3:
-            displayAllObjects(myPipe, myCs);
-            break;
-        case 4:
-            editPipe(myPipe);
-            break;
-        case 5:
-            editCs(myCs);
-            break;
-        case 6:
-            saveToFile(myPipe, myCs);
-            break;
-        case 7:
-            loadFromFile(myPipe, myCs);
-            break;
-        case 0:
-            cout << "Выход из программы." << endl;
-            return 0;
-        default:
-            cout << "Команда не распознана. Пожалуйста, выберите пункт из меню." << endl;
-        }
+        int command = getValidInput<int>("");
+        processCommand(command, myPipe, myCs);
     }
 }
