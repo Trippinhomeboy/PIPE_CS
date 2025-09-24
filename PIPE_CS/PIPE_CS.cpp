@@ -1,25 +1,25 @@
 ﻿#include <iostream>
 #include <string>
-#include <limits>
-#include <fstream>
+#include <limits> // проверка границы чисел
+#include <fstream> // работа с файлами
 
 using namespace std;
 
-struct Pipe {
+struct Pipe { // структура для трубы
     string name;
     double length = 0;
     double diameter = 0;
     bool isUnderRepair = false;
 };
 
-struct Cs {
+struct Cs { // структура для компрессорной станции 
     string name;
     int totalWorkshops = 0;
     int workingWorkshops = 0;
     double efficiency = 0;
 };
 
-template <typename T>
+template <typename T> // Проверка входных данных
 T getValidInput(const string& prompt) {
     T value;
     while (true) {
@@ -27,7 +27,7 @@ T getValidInput(const string& prompt) {
         cin >> value;
         if (cin.fail()) {
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очищаю буфер до конца строки 
             cout << "Error: Enter a valid number.\n";
         }
         else {
@@ -37,53 +37,53 @@ T getValidInput(const string& prompt) {
     }
 }
 
-void createPipe(Pipe& pipe) {
+void createPipe(Pipe& pipe) { // Ссылка на оригинальный объект 
     cout << "\n=== Add New Pipe ===" << endl;
     cout << "Enter pipe name: ";
-    getline(cin, pipe.name);
+    getline(cin, pipe.name); // Читаю всю строку
 
-    pipe.length = getValidInput<double>("Enter pipe length (km): ");
+    pipe.length = getValidInput<double>("Enter pipe length (km): "); // Проверка для длины
     while (pipe.length <= 0) {
         cout << "Length must be positive. Try again.\n";
         pipe.length = getValidInput<double>("Enter pipe length (km): ");
     }
 
-    pipe.diameter = getValidInput<double>("Enter pipe diameter (mm): ");
+    pipe.diameter = getValidInput<double>("Enter pipe diameter (mm): "); // Проверка для диаметра
     while (pipe.diameter <= 0) {
         cout << "Diameter must be positive. Try again.\n";
         pipe.diameter = getValidInput<double>("Enter pipe diameter (mm): ");
     }
 
     pipe.isUnderRepair = false;
-    cout << "Pipe '" << pipe.name << "' added successfully!\n" << endl;
+    cout << "Pipe '" << pipe.name << "' added successfully!\n" << endl; // Как f строки в питоне
 }
 
-void createCs(Cs& cs) {
+void createCs(Cs& cs) { // Ссылка на оригинальный объект Cs
     cout << "\n=== Add New Compressor Station ===" << endl;
     cout << "Enter station name: ";
     getline(cin, cs.name);
 
     cs.totalWorkshops = getValidInput<int>("Enter total workshops: ");
-    while (cs.totalWorkshops <= 0) {
+    while (cs.totalWorkshops <= 0) { // Проверка количества цехов
         cout << "Number must be positive. Try again.\n";
         cs.totalWorkshops = getValidInput<int>("Enter total workshops: ");
     }
 
-    cs.workingWorkshops = getValidInput<int>("Enter working workshops: ");
+    cs.workingWorkshops = getValidInput<int>("Enter working workshops: "); // Проверка количества цехов в работе 
     while (cs.workingWorkshops < 0 || cs.workingWorkshops > cs.totalWorkshops) {
         cout << "Working workshops cannot be negative or exceed total. Try again.\n";
         cs.workingWorkshops = getValidInput<int>("Enter working workshops: ");
     }
 
-    cs.efficiency = getValidInput<double>("Enter efficiency (%): ");
+    cs.efficiency = getValidInput<double>("Enter efficiency (%): "); // Проверка значения эффективности
     while (cs.efficiency < 0 || cs.efficiency > 100) {
         cout << "Efficiency must be between 0 and 100%. Try again.\n";
         cs.efficiency = getValidInput<double>("Enter efficiency (%): ");
     }
-    cout << "Station '" << cs.name << "' added successfully!\n" << endl;
+    cout << "Station '" << cs.name << "' added successfully!\n" << endl; // Успех
 }
 
-void displayAllObjects(const Pipe& pipe, const Cs& cs) {
+void displayAllObjects(const Pipe& pipe, const Cs& cs) { // Просмотр всех объектов 
     cout << "\n=== ALL OBJECTS ===" << endl;
 
     cout << "--- Pipe ---" << endl;
@@ -111,7 +111,7 @@ void displayAllObjects(const Pipe& pipe, const Cs& cs) {
 }
 
 void editPipe(Pipe& pipe) {
-    if (pipe.name.empty()) {
+    if (pipe.name.empty()) { // Проверка наличия трубы
         cout << "Error: Create a pipe first." << endl;
         return;
     }
@@ -123,7 +123,7 @@ void editPipe(Pipe& pipe) {
 
     int choice = getValidInput<int>("Select action: ");
 
-    switch (choice) {
+    switch (choice) { // Кейсы с разными сценариями для починки трубы
     case 1:
         pipe.isUnderRepair = true;
         cout << "Repair started." << endl;
@@ -141,7 +141,7 @@ void editPipe(Pipe& pipe) {
 }
 
 void editCs(Cs& cs) {
-    if (cs.name.empty()) {
+    if (cs.name.empty()) { // Проверка наличия компрессорной станции
         cout << "Error: Create a station first." << endl;
         return;
     }
@@ -154,7 +154,7 @@ void editCs(Cs& cs) {
     int choice = getValidInput<int>("Select action: ");
 
     switch (choice) {
-    case 1:
+    case 1: // Кейсы для цехов в работе
         if (cs.workingWorkshops < cs.totalWorkshops) {
             cs.workingWorkshops++;
             cout << "Workshop started. Now working: " << cs.workingWorkshops << " workshops." << endl;
@@ -182,12 +182,12 @@ void editCs(Cs& cs) {
 
 void saveToFile(const Pipe& pipe, const Cs& cs, const string& filename = "data.txt") {
     ofstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open()) {  // Проверка открылся ли файл
         cout << "Error: Cannot open file for writing." << endl;
         return;
     }
 
-    if (!pipe.name.empty()) {
+    if (!pipe.name.empty()) { // Если есть данные в pipe
         file << "PIPE" << endl;
         file << pipe.name << endl;
         file << pipe.length << endl;
@@ -195,7 +195,7 @@ void saveToFile(const Pipe& pipe, const Cs& cs, const string& filename = "data.t
         file << pipe.isUnderRepair << endl;
     }
 
-    if (!cs.name.empty()) {
+    if (!cs.name.empty()) { // Если есть данные в cs
         file << "CS" << endl;
         file << cs.name << endl;
         file << cs.totalWorkshops << endl;
@@ -207,7 +207,7 @@ void saveToFile(const Pipe& pipe, const Cs& cs, const string& filename = "data.t
     cout << "Data saved to file '" << filename << "'." << endl;
 }
 
-void loadFromFile(Pipe& pipe, Cs& cs, const string& filename = "data.txt") {
+void loadFromFile(Pipe& pipe, Cs& cs, const string& filename = "data.txt") { // Загрузка из файла 
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Error: Cannot open file for reading." << endl;
@@ -235,7 +235,7 @@ void loadFromFile(Pipe& pipe, Cs& cs, const string& filename = "data.txt") {
     cout << "Data loaded from file '" << filename << "'." << endl;
 }
 
-void displayMenu() {
+void displayMenu() { // Меню для пользователя
     cout << "\n================================" << endl;
     cout << "             MENU" << endl;
     cout << "================================" << endl;
@@ -251,7 +251,7 @@ void displayMenu() {
     cout << "Enter command number: ";
 }
 
-void processCommand(int command, Pipe& pipe, Cs& cs) {
+void processCommand(int command, Pipe& pipe, Cs& cs) { // Кейсы с вызовом функций
     switch (command) {
     case 1:
         createPipe(pipe);
@@ -282,7 +282,7 @@ void processCommand(int command, Pipe& pipe, Cs& cs) {
     }
 }
 
-int main() {
+int main() { // Main и вызов меню
     Pipe myPipe;
     Cs myCs;
 
