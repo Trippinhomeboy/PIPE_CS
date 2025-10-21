@@ -1,0 +1,50 @@
+=== PROGRAM STARTED ===
+=== PROGRAM STARTED ===
+MENU CHOICE: 1
+PIPE INPUT - Name: Таг°† 1
+INPUT: ¬ведите длину трубы (в км): 1000
+INPUT: ¬ведите диаметр трубы (в мм): 2000
+PIPE ADDED - ID: 1
+MENU CHOICE: 1
+PIPE INPUT - Name: Таг°† 2
+INPUT: ¬ведите длину трубы (в км): 700
+INPUT: ¬ведите диаметр трубы (в мм): 1000
+PIPE ADDED - ID: 3
+MENU CHOICE: 1
+PIPE INPUT - Name: Таг°† 3 
+INPUT: ¬ведите длину трубы (в км): 500
+INPUT: ¬ведите диаметр трубы (в мм): 3000
+PIPE ADDED - ID: 5
+MENU CHOICE: 3
+MENU CHOICE: 4
+INPUT: ¬ыберите действие: 1
+PIPE SEARCH by name: Таг°† 1
+PIPE SEARCH by name: 'Таг°† 1' found 1 results
+INPUT: ¬ыберите действие: 1
+PIPE 1 status changed to: ƒа
+PIPE SUBSET EDIT - 1 pipes modified
+INPUT: ¬ыберите действие: 4
+INPUT: ¬ведите ID трубы дл€ редактировани€: 3
+PIPE 3 status changed to: ƒа
+=== PROGRAM STARTED ===
+MENU CHOICE: 3
+MENU CHOICE: 1
+PIPE INPUT - Name: ваг°† 1
+INPUT: ¬ведите длину трубы (в км): 444
+INPUT: ¬ведите диаметр трубы (в мм): 666
+PIPE ADDED - ID: 1
+MENU CHOICE: 3
+=== PROGRAM STARTED ===
+=== PROGRAM STARTED ===
+=== PROGRAM STARTED ===
+USER INPUT: 111
+USER INPUT: 222
+USER INPUT: 3324
+USER INPUT: 44345
+USER INPUT: 3455
+USER INPUT: ppo
+USER INPUT: 1
+USER INPUT: 1
+=== PROGRAM STARTED ===
+=== PROGRAM STARTED ===
+=== PROGRAM STARTED ===
