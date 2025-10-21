@@ -7,7 +7,7 @@
 #include <limits>
 #include <cctype>
 #include <fstream>
-#include <cstdlib>  // Добавлено для strtol
+#include <cstdlib>
 
 extern std::ofstream logFile;
 
