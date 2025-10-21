@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 class PipeManager {
-private:
+private: 
     std::unordered_map<int, Pipe> pipes;
 
 public:
