@@ -10,7 +10,7 @@ private:
 
 public:
     void addPipe();
-    void displayAllPipes() const;
+    void displayAllPipes() const; 
     void displayPipes(const std::unordered_map<int, Pipe>& pipeSubset) const;
     void editPipe();
     void deletePipe();
