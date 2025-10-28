@@ -8,7 +8,7 @@ class CSManager {
 private:
     std::unordered_map<int, CompressorStation> stations;
 
-public: 
+public:
     void addCS();
     void displayAllCS() const;
     void displayCS(const std::unordered_map<int, CompressorStation>& csSubset) const;

@@ -8,7 +8,7 @@
 class CompressorStation {
 private:
     int id;
-    std::string name; 
+    std::string name;
     int workshops;
     int workshopsInWork;
     double efficiency;
