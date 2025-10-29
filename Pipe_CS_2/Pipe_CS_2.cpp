@@ -33,6 +33,11 @@ int main() {
         std::cout << "Choose command: ";
         std::getline(std::cin, choice);
 
+        // Логируем только пользовательский ввод (не меню)
+        if (!choice.empty()) {
+            logFile << choice << std::endl;
+        }
+
         choiceint = getChoice(choice);
 
         switch (choiceint) {
