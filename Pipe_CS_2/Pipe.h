@@ -12,7 +12,7 @@ private:
     bool status;
 
 public:
-    static int nextId;
+    static int maxId;
 
     Pipe();
     Pipe(const std::string& name, double length, double diameter, bool status = false);

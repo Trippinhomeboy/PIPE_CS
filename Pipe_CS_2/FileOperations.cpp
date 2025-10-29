@@ -16,8 +16,8 @@ void saveToFile(const PipeManager& pipeManager, const CSManager& csManager) {
     std::ofstream outFile(filename);
     if (outFile.is_open()) {
         outFile << "COUNTERS" << std::endl;
-        outFile << Pipe::nextId << std::endl;
-        outFile << CompressorStation::nextId << std::endl;
+        outFile << Pipe::maxId << std::endl;
+        outFile << CompressorStation::maxId << std::endl;
 
         for (const auto& pair : pipeManager.getPipes()) {
             outFile << pair.second;
@@ -49,17 +49,19 @@ void loadFromFile(PipeManager& pipeManager, CSManager& csManager) {
         std::string line;
         bool countersLoaded = false;
 
-        // Clear existing data
         pipeManager.getPipes().clear();
         csManager.getStations().clear();
+
+        Pipe::maxId = 0;
+        CompressorStation::maxId = 0;
 
         while (std::getline(inFile, line)) {
             try {
                 if (line == "COUNTERS" && !countersLoaded) {
                     std::getline(inFile, line);
-                    Pipe::nextId = std::stoi(line);
+                    Pipe::maxId = std::stoi(line);
                     std::getline(inFile, line);
-                    CompressorStation::nextId = std::stoi(line);
+                    CompressorStation::maxId = std::stoi(line);
                     countersLoaded = true;
                 }
                 else if (line == "PIPE") {

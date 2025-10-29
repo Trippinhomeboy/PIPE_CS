@@ -14,7 +14,7 @@ private:
     double efficiency;
 
 public:
-    static int nextId;
+    static int maxId;
 
     CompressorStation();
     CompressorStation(const std::string& name, int workshops, int workshopsInWork, double efficiency);

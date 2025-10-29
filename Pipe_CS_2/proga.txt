@@ -1,0 +1,15 @@
+COUNTERS
+2
+0
+PIPE
+1
+Truba 1
+1000
+200
+0
+PIPE
+2
+Truba 2
+500
+340
+0

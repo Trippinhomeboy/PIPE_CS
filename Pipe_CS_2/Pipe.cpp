@@ -3,16 +3,17 @@
 #include <iostream>
 #include <string>
 
-int Pipe::nextId = 1;
+int Pipe::maxId = 0;
 
-Pipe::Pipe() : id(nextId++), name(""), length(0), diameter(0), status(false) {}
-
-Pipe::Pipe(const std::string& name, double length, double diameter, bool status)
-    : id(nextId++), name(name), length(length), diameter(diameter), status(status) {
+Pipe::Pipe() : id(0), name(""), length(0), diameter(0), status(false) {
 }
 
-void Pipe::editRepairStatus() {
-    status = !status;
+Pipe::Pipe(const std::string& name, double length, double diameter, bool status)
+    : id(0), name(name), length(length), diameter(diameter), status(status) {
+}
+
+void editRepairStatus() {
+    status = !status; 
     std::cout << "Repair status changed to: " << (status ? "Yes" : "No") << std::endl;
 }
 
@@ -23,6 +24,11 @@ void Pipe::readFromConsole() {
     length = inputInRange<double>("Enter pipe length (in km): ", 1.0, 10000.0);
     diameter = inputInRange<double>("Enter pipe diameter (in mm): ", 1.0, 10000.0);
     status = false;
+
+    // Assign ID only when creating new object from console
+    if (id == 0) {
+        id = ++maxId;
+    }
 }
 
 void Pipe::writeToConsole() const {
@@ -49,8 +55,8 @@ std::istream& operator>>(std::istream& in, Pipe& pipe) {
     std::getline(in, line); // Read "PIPE"
     std::getline(in, line);
     pipe.id = std::stoi(line);
-    if (pipe.id >= Pipe::nextId) {
-        Pipe::nextId = pipe.id + 1;
+    if (pipe.id > Pipe::maxId) {
+        Pipe::maxId = pipe.id;
     }
     std::getline(in, pipe.name);
     std::getline(in, line);
@@ -77,8 +83,8 @@ std::ifstream& operator>>(std::ifstream& in, Pipe& pipe) {
     std::getline(in, line); // Read "PIPE"
     std::getline(in, line);
     pipe.id = std::stoi(line);
-    if (pipe.id >= Pipe::nextId) {
-        Pipe::nextId = pipe.id + 1;
+    if (pipe.id > Pipe::maxId) {
+        Pipe::maxId = pipe.id;
     }
     std::getline(in, pipe.name);
     std::getline(in, line);

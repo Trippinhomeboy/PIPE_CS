@@ -39,7 +39,7 @@ void CSManager::editCS() {
     }
 
     displayAllCS();
-    int id = inputInRange<int>("Enter station ID for editing: ", 1, CompressorStation::nextId - 1);
+    int id = inputInRange<int>("Enter station ID for editing: ", 1, CompressorStation::maxId);
 
     auto it = stations.find(id);
     if (it != stations.end()) {
@@ -57,7 +57,7 @@ void CSManager::deleteCS() {
     }
 
     displayAllCS();
-    int id = inputInRange<int>("Enter station ID for deletion: ", 1, CompressorStation::nextId - 1);
+    int id = inputInRange<int>("Enter station ID for deletion: ", 1, CompressorStation::maxId);
 
     auto it = stations.find(id);
     if (it != stations.end()) {

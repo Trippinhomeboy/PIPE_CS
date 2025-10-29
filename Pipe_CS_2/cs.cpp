@@ -3,12 +3,13 @@
 #include <iostream>
 #include <string>
 
-int CompressorStation::nextId = 1;
+int CompressorStation::maxId = 0;
 
-CompressorStation::CompressorStation() : id(nextId++), name(""), workshops(0), workshopsInWork(0), efficiency(0) {}
+CompressorStation::CompressorStation() : id(0), name(""), workshops(0), workshopsInWork(0), efficiency(0) {
+}
 
 CompressorStation::CompressorStation(const std::string& name, int workshops, int workshopsInWork, double efficiency)
-    : id(nextId++), name(name), workshops(workshops), workshopsInWork(workshopsInWork), efficiency(efficiency) {
+    : id(0), name(name), workshops(workshops), workshopsInWork(workshopsInWork), efficiency(efficiency) {
 }
 
 void CompressorStation::editWorkshop() {
@@ -38,6 +39,9 @@ void CompressorStation::editWorkshop() {
     default:
         std::cout << "Invalid choice, try again." << std::endl;
     }
+
+    // Recalculate efficiency after editing workshops
+    efficiency = getWorkshopPercentage();
 }
 
 void CompressorStation::readFromConsole() {
@@ -47,7 +51,12 @@ void CompressorStation::readFromConsole() {
     workshops = inputInRange<int>("Enter number of workshops: ", 1, 10000);
     workshopsInWork = inputInRange<int>("Enter number of working workshops: ", 0, workshops);
     // Efficiency is calculated automatically based on workshop percentage
-    efficiency = (workshops > 0) ? (workshopsInWork * 100.0 / workshops) : 0;
+    efficiency = getWorkshopPercentage();
+
+    // Assign ID only when creating new object from console
+    if (id == 0) {
+        id = ++maxId;
+    }
 }
 
 void CompressorStation::writeToConsole() const {
@@ -55,8 +64,7 @@ void CompressorStation::writeToConsole() const {
     std::cout << "Station name: " << name << std::endl;
     std::cout << "Number of workshops: " << workshops << std::endl;
     std::cout << "Number of working workshops: " << workshopsInWork << std::endl;
-    std::cout << "Efficiency (%): " << efficiency << std::endl;
-    std::cout << "Percentage of working workshops: " << getWorkshopPercentage() << "%" << std::endl << std::endl;
+    std::cout << "Efficiency (%): " << efficiency << std::endl << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& out, const CompressorStation& station) {
@@ -74,6 +82,9 @@ std::istream& operator>>(std::istream& in, CompressorStation& station) {
     std::getline(in, line); // Read "CS"
     std::getline(in, line);
     station.id = std::stoi(line);
+    if (station.id > CompressorStation::maxId) {
+        CompressorStation::maxId = station.id;
+    }
     std::getline(in, station.name);
     std::getline(in, line);
     station.workshops = std::stoi(line);
@@ -99,6 +110,9 @@ std::ifstream& operator>>(std::ifstream& in, CompressorStation& station) {
     std::getline(in, line); // Read "CS"
     std::getline(in, line);
     station.id = std::stoi(line);
+    if (station.id > CompressorStation::maxId) {
+        CompressorStation::maxId = station.id;
+    }
     std::getline(in, station.name);
     std::getline(in, line);
     station.workshops = std::stoi(line);

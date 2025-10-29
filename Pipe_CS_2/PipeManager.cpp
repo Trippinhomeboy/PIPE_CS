@@ -39,7 +39,7 @@ void PipeManager::editPipe() {
     }
 
     displayAllPipes();
-    int id = inputInRange<int>("Enter pipe ID for editing: ", 1, Pipe::nextId - 1);
+    int id = inputInRange<int>("Enter pipe ID for editing: ", 1, Pipe::maxId);
 
     auto it = pipes.find(id);
     if (it != pipes.end()) {
@@ -57,7 +57,7 @@ void PipeManager::deletePipe() {
     }
 
     displayAllPipes();
-    int id = inputInRange<int>("Enter pipe ID for deletion: ", 1, Pipe::nextId - 1);
+    int id = inputInRange<int>("Enter pipe ID for deletion: ", 1, Pipe::maxId);
 
     auto it = pipes.find(id);
     if (it != pipes.end()) {
