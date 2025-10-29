@@ -5,7 +5,7 @@
 
 int Pipe::maxId = 0;
 
-Pipe::Pipe() : id(0), name(""), length(0), diameter(0), status(false) {
+Pipe::Pipe() : id(0), name(""), length(0), diameter(0), status(false) { 
 }
 
 Pipe::Pipe(const std::string& name, double length, double diameter, bool status)
