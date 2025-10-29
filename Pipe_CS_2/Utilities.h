@@ -20,7 +20,7 @@ T inputInRange(const std::string& prompt, T minValue, T maxValue) {
         std::getline(std::cin, input);
 
         if (!input.empty()) {
-            logFile << "USER INPUT: " << input << std::endl;
+            logFile << input << std::endl;
         }
 
         std::stringstream ss(input);
