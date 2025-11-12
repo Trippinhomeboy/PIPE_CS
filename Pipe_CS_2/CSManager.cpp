@@ -103,7 +103,6 @@ void CSManager::editCSSubset(const std::unordered_map<int, CompressorStation>& c
 
 void CSManager::deleteCSSubset(const std::unordered_map<int, CompressorStation>& csSubset, Web& network) {
     for (const auto& pair : csSubset) {
-        // Remove connections that involve this CS
         network.removeConnectionsWithCS(pair.first);
         stations.erase(pair.first);
     }
