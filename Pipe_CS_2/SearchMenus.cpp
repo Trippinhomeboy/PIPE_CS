@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-void searchPipeMenu(PipeManager& pipeManager) {
+void searchPipeMenu(PipeManager& pipeManager, Web& network) {
     while (true) {
         std::cout << "=== PIPE SEARCH AND MANAGEMENT ===" << std::endl;
         std::cout << "1) Search by name" << std::endl;
@@ -37,7 +37,7 @@ void searchPipeMenu(PipeManager& pipeManager) {
                     std::cout << "Status of all found pipes changed." << std::endl;
                     break;
                 case 2:
-                    pipeManager.deletePipeSubset(searchResult);
+                    pipeManager.deletePipeSubset(searchResult, network);
                     std::cout << "All found pipes deleted." << std::endl;
                     break;
                 case 0:
@@ -66,7 +66,7 @@ void searchPipeMenu(PipeManager& pipeManager) {
                     std::cout << "Status of all found pipes changed." << std::endl;
                     break;
                 case 2:
-                    pipeManager.deletePipeSubset(searchResult);
+                    pipeManager.deletePipeSubset(searchResult, network);
                     std::cout << "All found pipes deleted." << std::endl;
                     break;
                 case 0:
@@ -85,7 +85,7 @@ void searchPipeMenu(PipeManager& pipeManager) {
             pipeManager.editPipe();
             break;
         case 5:
-            pipeManager.deletePipe();
+            pipeManager.deletePipe(network);
             break;
         case 0:
             return;
@@ -93,7 +93,7 @@ void searchPipeMenu(PipeManager& pipeManager) {
     }
 }
 
-void searchCSMenu(CSManager& csManager) {
+void searchCSMenu(CSManager& csManager, Web& network) {
     while (true) {
         std::cout << "=== COMPRESSOR STATION SEARCH AND MANAGEMENT ===" << std::endl;
         std::cout << "1) Search by name" << std::endl;
@@ -127,7 +127,7 @@ void searchCSMenu(CSManager& csManager) {
                     std::cout << "All found stations edited." << std::endl;
                     break;
                 case 2:
-                    csManager.deleteCSSubset(searchResult);
+                    csManager.deleteCSSubset(searchResult, network);
                     std::cout << "All found stations deleted." << std::endl;
                     break;
                 case 0:
@@ -157,7 +157,7 @@ void searchCSMenu(CSManager& csManager) {
                     std::cout << "All found stations edited." << std::endl;
                     break;
                 case 2:
-                    csManager.deleteCSSubset(searchResult);
+                    csManager.deleteCSSubset(searchResult, network);
                     std::cout << "All found stations deleted." << std::endl;
                     break;
                 case 0:
@@ -176,7 +176,7 @@ void searchCSMenu(CSManager& csManager) {
             csManager.editCS();
             break;
         case 5:
-            csManager.deleteCS();
+            csManager.deleteCS(network);
             break;
         case 0:
             return;

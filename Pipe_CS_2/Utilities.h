@@ -43,7 +43,7 @@ inline bool isValidChoice(const std::string& s) {
     for (char c : s) {
         if (!std::isdigit(static_cast<unsigned char>(c))) return false;
     }
-    return s.length() < 2;
+    return s.length() < 3; // Increased to allow 2-digit choices
 }
 
 inline long getChoice(const std::string& command) {

@@ -50,7 +50,7 @@ void CSManager::editCS() {
     }
 }
 
-void CSManager::deleteCS() {
+void CSManager::deleteCS(Web& network) {
     if (stations.empty()) {
         std::cout << "No stations available for deletion." << std::endl;
         return;
@@ -61,6 +61,8 @@ void CSManager::deleteCS() {
 
     auto it = stations.find(id);
     if (it != stations.end()) {
+        // Remove connections that involve this CS
+        network.removeConnectionsWithCS(id);
         stations.erase(it);
         std::cout << "Station with ID " << id << " deleted." << std::endl;
     }
@@ -99,8 +101,10 @@ void CSManager::editCSSubset(const std::unordered_map<int, CompressorStation>& c
     }
 }
 
-void CSManager::deleteCSSubset(const std::unordered_map<int, CompressorStation>& csSubset) {
+void CSManager::deleteCSSubset(const std::unordered_map<int, CompressorStation>& csSubset, Web& network) {
     for (const auto& pair : csSubset) {
+        // Remove connections that involve this CS
+        network.removeConnectionsWithCS(pair.first);
         stations.erase(pair.first);
     }
 }

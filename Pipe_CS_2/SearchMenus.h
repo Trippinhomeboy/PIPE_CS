@@ -3,8 +3,9 @@
 
 #include "PipeManager.h"
 #include "CSManager.h"
+#include "web.h"
 
-void searchPipeMenu(PipeManager& pipeManager);
-void searchCSMenu(CSManager& csManager);
+void searchPipeMenu(PipeManager& pipeManager, Web& network);
+void searchCSMenu(CSManager& csManager, Web& network);
 
 #endif

@@ -1,0 +1,15 @@
+COUNTERS
+1
+1
+PIPE
+1
+Truba 1
+1000
+300
+1
+CS
+1
+CS 1
+20
+6
+30

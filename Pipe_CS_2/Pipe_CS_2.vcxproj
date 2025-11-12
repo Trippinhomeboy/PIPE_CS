@@ -131,6 +131,8 @@
     <ClCompile Include="Pipe_CS_2.cpp" />
     <ClCompile Include="SearchMenus.cpp" />
     <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="web.cpp" />
+    <ClCompile Include="WebManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cs.h" />
@@ -140,6 +142,8 @@
     <ClInclude Include="PipeManager.h" />
     <ClInclude Include="SearchMenus.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="web.h" />
+    <ClInclude Include="WebManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

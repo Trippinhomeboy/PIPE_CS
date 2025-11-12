@@ -2,6 +2,7 @@
 #define PIPEMANAGER_H
 
 #include "Pipe.h"
+#include "web.h"
 #include <unordered_map>
 
 class PipeManager {
@@ -13,13 +14,13 @@ public:
     void displayAllPipes() const;
     void displayPipes(const std::unordered_map<int, Pipe>& pipeSubset) const;
     void editPipe();
-    void deletePipe();
+    void deletePipe(Web& network); // Updated to accept network reference
 
     std::unordered_map<int, Pipe> searchByName(const std::string& name) const;
     std::unordered_map<int, Pipe> searchByStatus(bool status) const;
 
     void editPipeSubset(const std::unordered_map<int, Pipe>& pipeSubset);
-    void deletePipeSubset(const std::unordered_map<int, Pipe>& pipeSubset);
+    void deletePipeSubset(const std::unordered_map<int, Pipe>& pipeSubset, Web& network); // Updated
 
     const std::unordered_map<int, Pipe>& getPipes() const { return pipes; }
     std::unordered_map<int, Pipe>& getPipes() { return pipes; }

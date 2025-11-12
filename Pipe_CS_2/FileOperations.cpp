@@ -58,10 +58,12 @@ void loadFromFile(PipeManager& pipeManager, CSManager& csManager) {
         while (std::getline(inFile, line)) {
             try {
                 if (line == "COUNTERS" && !countersLoaded) {
-                    std::getline(inFile, line);
-                    Pipe::maxId = std::stoi(line);
-                    std::getline(inFile, line);
-                    CompressorStation::maxId = std::stoi(line);
+                    if (std::getline(inFile, line) && !line.empty()) {
+                        Pipe::maxId = std::stoi(line);
+                    }
+                    if (std::getline(inFile, line) && !line.empty()) {
+                        CompressorStation::maxId = std::stoi(line);
+                    }
                     countersLoaded = true;
                 }
                 else if (line == "PIPE") {
@@ -77,6 +79,7 @@ void loadFromFile(PipeManager& pipeManager, CSManager& csManager) {
             }
             catch (const std::exception& e) {
                 std::cerr << "Error loading data: " << e.what() << std::endl;
+                std::cerr << "Problematic line: '" << line << "'" << std::endl;
                 continue;
             }
         }

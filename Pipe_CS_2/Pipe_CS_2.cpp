@@ -1,12 +1,6 @@
 ﻿#include <iostream>
 #include <string>
 #include <fstream>
-#include <unordered_map>
-#include <algorithm>
-#include <iomanip>
-#include <cstdlib>
-#include <clocale>
-#include <cstring> 
 #include "Pipe.h"
 #include "cs.h"
 #include "PipeManager.h"
@@ -14,31 +8,23 @@
 #include "Utilities.h"
 #include "FileOperations.h"
 #include "SearchMenus.h"
+#include "WebManager.h"
 
 std::ofstream logFile("log.txt", std::ios::app);
 
 int main() {
     PipeManager pipeManager;
     CSManager csManager;
-
-    setlocale(LC_ALL, "");
+    WebManager webManager;
 
     std::string choice;
-    long choiceint;
-
-    logFile << "=== PROGRAM STARTED ===" << std::endl;
 
     while (true) {
         menuDisplay();
         std::cout << "Choose command: ";
         std::getline(std::cin, choice);
 
-        // Логируем только пользовательский ввод (не меню)
-        if (!choice.empty()) {
-            logFile << choice << std::endl;
-        }
-
-        choiceint = getChoice(choice);
+        long choiceint = getChoice(choice);
 
         switch (choiceint) {
         case 1:
@@ -52,10 +38,10 @@ int main() {
             csManager.displayAllCS();
             break;
         case 4:
-            searchPipeMenu(pipeManager);
+            searchPipeMenu(pipeManager, webManager.getNetwork());
             break;
         case 5:
-            searchCSMenu(csManager);
+            searchCSMenu(csManager, webManager.getNetwork());
             break;
         case 6:
             saveToFile(pipeManager, csManager);
@@ -63,14 +49,26 @@ int main() {
         case 7:
             loadFromFile(pipeManager, csManager);
             break;
+        case 8:
+            webManager.addConnection(pipeManager, csManager);
+            break;
+        case 9:
+            webManager.removeConnection();
+            break;
+        case 10:
+            webManager.displayConnections();
+            break;
+        case 11:
+            webManager.topologicalSort();
+            break;
+        case 12:
+            webManager.checkCycles();
+            break;
         case 0:
-            std::cout << "Exiting program." << std::endl;
-            logFile << "=== PROGRAM FINISHED ===" << std::endl;
-            logFile.close();
+            std::cout << "Exit." << std::endl;
             return 0;
         default:
-            std::cout << "Invalid choice, try again." << std::endl;
-            continue;
+            std::cout << "Invalid choice." << std::endl;
         }
     }
 }

@@ -36,6 +36,10 @@ public:
     void readFromConsole();
     void writeToConsole() const;
 
+    // Методы для файловых операций
+    void saveToFile(std::ofstream& out) const;
+    void loadFromFile(std::ifstream& in);
+
     friend std::ostream& operator<<(std::ostream& out, const CompressorStation& station);
     friend std::istream& operator>>(std::istream& in, CompressorStation& station);
     friend std::ofstream& operator<<(std::ofstream& out, const CompressorStation& station);

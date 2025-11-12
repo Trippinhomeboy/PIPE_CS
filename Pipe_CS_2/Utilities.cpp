@@ -15,6 +15,11 @@ void menuDisplay() {
     std::cout << "5) Search and manage (stations)" << std::endl;
     std::cout << "6) Save" << std::endl;
     std::cout << "7) Load" << std::endl;
+    std::cout << "8) Add connection" << std::endl;
+    std::cout << "9) Remove connection" << std::endl;
+    std::cout << "10) View connections" << std::endl;
+    std::cout << "11) Topological sort" << std::endl;
+    std::cout << "12) Check for cycles" << std::endl;
     std::cout << "0) Exit" << std::endl;
 
     std::cout << std::setw(30) << std::setfill('=') << "" << std::endl;

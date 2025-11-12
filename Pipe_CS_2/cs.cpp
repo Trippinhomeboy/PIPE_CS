@@ -67,6 +67,32 @@ void CompressorStation::writeToConsole() const {
     std::cout << "Efficiency (%): " << efficiency << std::endl << std::endl;
 }
 
+void CompressorStation::saveToFile(std::ofstream& out) const {
+    out << "CS" << std::endl;
+    out << id << std::endl;
+    out << name << std::endl;
+    out << workshops << std::endl;
+    out << workshopsInWork << std::endl;
+    out << efficiency << std::endl;
+}
+
+void CompressorStation::loadFromFile(std::ifstream& in) {
+    std::string line;
+    std::getline(in, line); // Skip "CS"
+    std::getline(in, line); // ID
+    if (!line.empty()) id = std::stoi(line);
+    if (id > CompressorStation::maxId) {
+        CompressorStation::maxId = id;
+    }
+    std::getline(in, name);
+    std::getline(in, line);
+    if (!line.empty()) workshops = std::stoi(line);
+    std::getline(in, line);
+    if (!line.empty()) workshopsInWork = std::stoi(line);
+    std::getline(in, line);
+    if (!line.empty()) efficiency = std::stod(line);
+}
+
 std::ostream& operator<<(std::ostream& out, const CompressorStation& station) {
     out << "CS" << std::endl;
     out << station.id << std::endl;
@@ -79,19 +105,19 @@ std::ostream& operator<<(std::ostream& out, const CompressorStation& station) {
 
 std::istream& operator>>(std::istream& in, CompressorStation& station) {
     std::string line;
-    std::getline(in, line); // Read "CS"
-    std::getline(in, line);
-    station.id = std::stoi(line);
+    std::getline(in, line); // Skip "CS"
+    std::getline(in, line); // ID
+    if (!line.empty()) station.id = std::stoi(line);
     if (station.id > CompressorStation::maxId) {
         CompressorStation::maxId = station.id;
     }
     std::getline(in, station.name);
     std::getline(in, line);
-    station.workshops = std::stoi(line);
+    if (!line.empty()) station.workshops = std::stoi(line);
     std::getline(in, line);
-    station.workshopsInWork = std::stoi(line);
+    if (!line.empty()) station.workshopsInWork = std::stoi(line);
     std::getline(in, line);
-    station.efficiency = std::stod(line);
+    if (!line.empty()) station.efficiency = std::stod(line);
     return in;
 }
 
@@ -107,18 +133,18 @@ std::ofstream& operator<<(std::ofstream& out, const CompressorStation& station) 
 
 std::ifstream& operator>>(std::ifstream& in, CompressorStation& station) {
     std::string line;
-    std::getline(in, line); // Read "CS"
-    std::getline(in, line);
-    station.id = std::stoi(line);
+    std::getline(in, line); // Skip "CS"
+    std::getline(in, line); // ID
+    if (!line.empty()) station.id = std::stoi(line);
     if (station.id > CompressorStation::maxId) {
         CompressorStation::maxId = station.id;
     }
     std::getline(in, station.name);
     std::getline(in, line);
-    station.workshops = std::stoi(line);
+    if (!line.empty()) station.workshops = std::stoi(line);
     std::getline(in, line);
-    station.workshopsInWork = std::stoi(line);
+    if (!line.empty()) station.workshopsInWork = std::stoi(line);
     std::getline(in, line);
-    station.efficiency = std::stod(line);
+    if (!line.empty()) station.efficiency = std::stod(line);
     return in;
 }

@@ -1,0 +1,9 @@
+COUNTERS
+1
+0
+PIPE
+1
+truba 1
+100
+334
+0
