@@ -68,7 +68,7 @@ void Pipe::saveToFile(std::ofstream& out) const {
 
 void Pipe::loadFromFile(std::ifstream& in) {
     std::string line;
-    std::getline(in, line); // Skip "PIPE"
+    std::getline(in, line); 
     std::getline(in, line);
     if (!line.empty()) id = std::stoi(line);
     if (id > Pipe::maxId) {
@@ -95,8 +95,8 @@ std::ostream& operator<<(std::ostream& out, const Pipe& pipe) {
 
 std::istream& operator>>(std::istream& in, Pipe& pipe) {
     std::string line;
-    std::getline(in, line); // Skip "PIPE"
-    std::getline(in, line); // ID
+    std::getline(in, line); 
+    std::getline(in, line);
     if (!line.empty()) pipe.id = std::stoi(line);
     if (pipe.id > Pipe::maxId) {
         Pipe::maxId = pipe.id;
@@ -123,8 +123,8 @@ std::ofstream& operator<<(std::ofstream& out, const Pipe& pipe) {
 
 std::ifstream& operator>>(std::ifstream& in, Pipe& pipe) {
     std::string line;
-    std::getline(in, line); // Skip "PIPE"
-    std::getline(in, line); // ID
+    std::getline(in, line); 
+    std::getline(in, line); 
     if (!line.empty()) pipe.id = std::stoi(line);
     if (pipe.id > Pipe::maxId) {
         Pipe::maxId = pipe.id;

@@ -14,8 +14,7 @@ public:
     void displayAllCS() const;
     void displayCS(const std::unordered_map<int, CompressorStation>& csSubset) const;
     void editCS();
-    void deleteCS(Web& network); // Updated to accept network reference
-
+    void deleteCS(Web& network); 
     std::unordered_map<int, CompressorStation> searchByName(const std::string& name) const;
     std::unordered_map<int, CompressorStation> searchByWorkshopPercentage(double minPercent, double maxPercent) const;
 

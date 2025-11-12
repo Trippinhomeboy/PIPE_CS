@@ -36,7 +36,6 @@ public:
     void readFromConsole();
     void writeToConsole() const;
 
-    // Методы для файловых операций
     void saveToFile(std::ofstream& out) const;
     void loadFromFile(std::ifstream& in);
 

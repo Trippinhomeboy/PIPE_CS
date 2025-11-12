@@ -14,13 +14,13 @@ public:
     void displayAllPipes() const;
     void displayPipes(const std::unordered_map<int, Pipe>& pipeSubset) const;
     void editPipe();
-    void deletePipe(Web& network); // Updated to accept network reference
+    void deletePipe(Web& network); 
 
     std::unordered_map<int, Pipe> searchByName(const std::string& name) const;
     std::unordered_map<int, Pipe> searchByStatus(bool status) const;
 
     void editPipeSubset(const std::unordered_map<int, Pipe>& pipeSubset);
-    void deletePipeSubset(const std::unordered_map<int, Pipe>& pipeSubset, Web& network); // Updated
+    void deletePipeSubset(const std::unordered_map<int, Pipe>& pipeSubset, Web& network); 
 
     const std::unordered_map<int, Pipe>& getPipes() const { return pipes; }
     std::unordered_map<int, Pipe>& getPipes() { return pipes; }

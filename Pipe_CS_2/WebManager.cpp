@@ -11,7 +11,6 @@ void WebManager::addConnection(PipeManager& pipeManager, CSManager& csManager) {
         return;
     }
 
-    // Check if there are pipes with allowed diameters
     bool hasAllowedPipes = false;
     for (const auto& pipePair : pipeManager.getPipes()) {
         if (isDiameterAllowed(pipePair.second.getDiameter())) {
@@ -35,7 +34,6 @@ void WebManager::addConnection(PipeManager& pipeManager, CSManager& csManager) {
         return;
     }
 
-    // Check if CS exist
     if (csManager.getStations().find(startCSId) == csManager.getStations().end()) {
         std::cout << "Error: Start CS with ID " << startCSId << " not found." << std::endl;
         return;
@@ -55,10 +53,8 @@ void WebManager::addConnection(PipeManager& pipeManager, CSManager& csManager) {
         std::cout << "Warning: Reverse connection exists." << std::endl;
     }
 
-    // Display pipes grouped by diameter
     displayPipesByDiameter(pipeManager);
 
-    // Ask for diameter choice
     std::cout << "Allowed diameters: ";
     for (size_t i = 0; i < allowedDiameters.size(); ++i) {
         std::cout << allowedDiameters[i] << "mm";
@@ -70,18 +66,15 @@ void WebManager::addConnection(PipeManager& pipeManager, CSManager& csManager) {
 
     double chosenDiameter = inputInRange<double>("Enter pipe diameter to use: ", 500.0, 1400.0);
 
-    // Check if diameter is allowed
     if (!isDiameterAllowed(chosenDiameter)) {
         std::cout << "Error: Diameter " << chosenDiameter << "mm is not allowed. Use 500, 700, 1000 or 1400mm." << std::endl;
         return;
     }
 
-    // Find available pipes with chosen diameter
     std::vector<int> availablePipeIds;
     for (const auto& pipePair : pipeManager.getPipes()) {
         const Pipe& pipe = pipePair.second;
         if (pipe.getDiameter() == chosenDiameter) {
-            // Check if pipe is not already used in connections
             bool pipeUsed = false;
             for (const auto& conn : network.getConnections()) {
                 if (conn.pipeId == pipe.getId()) {
@@ -101,14 +94,12 @@ void WebManager::addConnection(PipeManager& pipeManager, CSManager& csManager) {
         return;
     }
 
-    // If only one pipe available, use it automatically
     int pipeId;
     if (availablePipeIds.size() == 1) {
         pipeId = availablePipeIds[0];
         std::cout << "Using pipe ID " << pipeId << " with diameter " << chosenDiameter << "mm." << std::endl;
     }
     else {
-        // Display available pipes
         std::cout << "Available pipes with diameter " << chosenDiameter << "mm:" << std::endl;
         for (int id : availablePipeIds) {
             const Pipe& pipe = pipeManager.getPipes().at(id);
@@ -116,12 +107,10 @@ void WebManager::addConnection(PipeManager& pipeManager, CSManager& csManager) {
                 << " | Length: " << pipe.getLength() << "km" << std::endl;
         }
 
-        // Get min and max ID from available pipes
         int minId = *std::min_element(availablePipeIds.begin(), availablePipeIds.end());
         int maxId = *std::max_element(availablePipeIds.begin(), availablePipeIds.end());
         pipeId = inputInRange<int>("Enter pipe ID to use: ", minId, maxId);
 
-        // Check if chosen ID is in available list
         if (std::find(availablePipeIds.begin(), availablePipeIds.end(), pipeId) == availablePipeIds.end()) {
             std::cout << "Error: Pipe ID " << pipeId << " is not available or has wrong diameter." << std::endl;
             return;
@@ -204,14 +193,12 @@ void WebManager::displayPipesByDiameter(const PipeManager& pipeManager) const {
 
     std::cout << "=== PIPES GROUPED BY DIAMETER ===" << std::endl;
 
-    // Group pipes by diameter
     std::map<double, std::vector<const Pipe*>> pipesByDiameter;
     for (const auto& pipePair : pipes) {
         const Pipe& pipe = pipePair.second;
         pipesByDiameter[pipe.getDiameter()].push_back(&pipe);
     }
 
-    // Display pipes for each diameter
     for (const auto& diameterGroup : pipesByDiameter) {
         double diameter = diameterGroup.first;
         const auto& pipeList = diameterGroup.second;
@@ -226,7 +213,7 @@ void WebManager::displayPipesByDiameter(const PipeManager& pipeManager) const {
         std::cout << std::endl;
 
         for (const Pipe* pipe : pipeList) {
-            // Check if pipe is used in connections
+           
             bool isUsed = false;
             for (const auto& conn : network.getConnections()) {
                 if (conn.pipeId == pipe->getId()) {

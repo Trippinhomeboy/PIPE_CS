@@ -40,7 +40,6 @@ void CompressorStation::editWorkshop() {
         std::cout << "Invalid choice, try again." << std::endl;
     }
 
-    // Recalculate efficiency after editing workshops
     efficiency = getWorkshopPercentage();
 }
 
@@ -50,10 +49,8 @@ void CompressorStation::readFromConsole() {
 
     workshops = inputInRange<int>("Enter number of workshops: ", 1, 10000);
     workshopsInWork = inputInRange<int>("Enter number of working workshops: ", 0, workshops);
-    // Efficiency is calculated automatically based on workshop percentage
     efficiency = getWorkshopPercentage();
 
-    // Assign ID only when creating new object from console
     if (id == 0) {
         id = ++maxId;
     }
@@ -78,8 +75,8 @@ void CompressorStation::saveToFile(std::ofstream& out) const {
 
 void CompressorStation::loadFromFile(std::ifstream& in) {
     std::string line;
-    std::getline(in, line); // Skip "CS"
-    std::getline(in, line); // ID
+    std::getline(in, line); 
+    std::getline(in, line); 
     if (!line.empty()) id = std::stoi(line);
     if (id > CompressorStation::maxId) {
         CompressorStation::maxId = id;
@@ -105,8 +102,8 @@ std::ostream& operator<<(std::ostream& out, const CompressorStation& station) {
 
 std::istream& operator>>(std::istream& in, CompressorStation& station) {
     std::string line;
-    std::getline(in, line); // Skip "CS"
-    std::getline(in, line); // ID
+    std::getline(in, line); 
+    std::getline(in, line); 
     if (!line.empty()) station.id = std::stoi(line);
     if (station.id > CompressorStation::maxId) {
         CompressorStation::maxId = station.id;
@@ -133,8 +130,8 @@ std::ofstream& operator<<(std::ofstream& out, const CompressorStation& station) 
 
 std::ifstream& operator>>(std::ifstream& in, CompressorStation& station) {
     std::string line;
-    std::getline(in, line); // Skip "CS"
-    std::getline(in, line); // ID
+    std::getline(in, line); 
+    std::getline(in, line); 
     if (!line.empty()) station.id = std::stoi(line);
     if (station.id > CompressorStation::maxId) {
         CompressorStation::maxId = station.id;

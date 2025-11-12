@@ -61,7 +61,7 @@ void PipeManager::deletePipe(Web& network) {
 
     auto it = pipes.find(id);
     if (it != pipes.end()) {
-        // Remove connections that use this pipe
+        
         network.removeConnectionsWithPipe(id);
         pipes.erase(it);
         std::cout << "Pipe with ID " << id << " deleted." << std::endl;
@@ -102,7 +102,7 @@ void PipeManager::editPipeSubset(const std::unordered_map<int, Pipe>& pipeSubset
 
 void PipeManager::deletePipeSubset(const std::unordered_map<int, Pipe>& pipeSubset, Web& network) {
     for (const auto& pair : pipeSubset) {
-        // Remove connections that use this pipe
+        
         network.removeConnectionsWithPipe(pair.first);
         pipes.erase(pair.first);
     }
