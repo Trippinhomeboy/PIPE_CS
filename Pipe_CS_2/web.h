@@ -21,7 +21,7 @@ struct Connection {
 class Web {
 private:
     std::vector<Connection> connections;
-    std::unordered_map<int, std::vector<int>> adjacencyList; // CS ID -> list of connected CS IDs
+    std::unordered_map<int, std::vector<int>> adjacencyList;
 
 public:
     void addConnection(int startCSId, int endCSId, int pipeId);
