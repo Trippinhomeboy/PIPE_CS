@@ -16,7 +16,6 @@ bool Web::removeConnection(int startCSId, int endCSId) {
     if (it != connections.end()) {
         connections.erase(it);
 
-        // Remove from adjacency list
         auto adjIt = adjacencyList.find(startCSId);
         if (adjIt != adjacencyList.end()) {
             auto& neighbors = adjIt->second;
@@ -36,7 +35,6 @@ void Web::removeConnectionsWithPipe(int pipeId) {
             return conn.pipeId == pipeId;
         }), connections.end());
 
-    // Rebuild adjacency list
     adjacencyList.clear();
     for (const auto& conn : connections) {
         adjacencyList[conn.startCSId].push_back(conn.endCSId);
@@ -49,7 +47,7 @@ void Web::removeConnectionsWithCS(int csId) {
             return conn.startCSId == csId || conn.endCSId == csId;
         }), connections.end());
 
-    // Rebuild adjacency list
+
     adjacencyList.clear();
     for (const auto& conn : connections) {
         adjacencyList[conn.startCSId].push_back(conn.endCSId);
@@ -76,7 +74,6 @@ std::vector<int> Web::topologicalSort() const {
     std::unordered_map<int, bool> visited;
     std::unordered_map<int, bool> recStack;
 
-    // Initialize visited and recStack for all CS in adjacency list
     for (const auto& pair : adjacencyList) {
         visited[pair.first] = false;
         recStack[pair.first] = false;
@@ -90,7 +87,6 @@ std::vector<int> Web::topologicalSort() const {
         int node = pair.first;
         if (!visited[node]) {
             if (!topologicalSortUtil(node, visited, recStack, result)) {
-                // Cycle detected
                 return std::vector<int>();
             }
         }
@@ -104,7 +100,7 @@ bool Web::hasCycle() const {
     std::unordered_map<int, bool> visited;
     std::unordered_map<int, bool> recStack;
 
-    // Initialize visited and recStack for all CS in adjacency list
+    
     for (const auto& pair : adjacencyList) {
         visited[pair.first] = false;
         recStack[pair.first] = false;
@@ -117,7 +113,7 @@ bool Web::hasCycle() const {
     for (const auto& pair : adjacencyList) {
         int node = pair.first;
         if (!visited[node]) {
-            std::vector<int> dummy; // Создаем временный вектор для вызова
+            std::vector<int> dummy;
             if (!topologicalSortUtil(node, visited, recStack, dummy)) {
                 return true;
             }
@@ -142,7 +138,7 @@ bool Web::topologicalSortUtil(int v, std::unordered_map<int, bool>& visited,
                     }
                 }
                 else if (recStack[neighbor]) {
-                    return false; // Cycle detected
+                    return false; 
                 }
             }
         }
