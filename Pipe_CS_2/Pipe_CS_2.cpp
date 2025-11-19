@@ -1,32 +1,31 @@
-﻿#include <iostream>
-#include <string>
-#include <fstream>
-#include "Pipe.h"
-#include "cs.h"
-#include "PipeManager.h"
+﻿#include "PipeManager.h"
 #include "CSManager.h"
-#include "Utilities.h"
+#include "WebManager.h"
 #include "FileOperations.h"
 #include "SearchMenus.h"
-#include "WebManager.h"
+#include "Utilities.h"
+#include <iostream>
+#include <string>
+#include <fstream>
 
-std::ofstream logFile("log.txt", std::ios::app);
+std::ofstream logFile("log.txt");
 
 int main() {
     PipeManager pipeManager;
     CSManager csManager;
     WebManager webManager;
 
-    std::string choice;
-
     while (true) {
         menuDisplay();
-        std::cout << "Choose command: ";
-        std::getline(std::cin, choice);
+        std::string command;
+        std::getline(std::cin, command);
 
-        long choiceint = getChoice(choice);
+        if (!command.empty()) {
+            logFile << command << std::endl;
+        }
 
-        switch (choiceint) {
+        long choice = getChoice(command);
+        switch (choice) {
         case 1:
             pipeManager.addPipe();
             break;
@@ -64,11 +63,21 @@ int main() {
         case 12:
             webManager.checkCycles();
             break;
+        case 13:
+            webManager.calculateMaxFlow(pipeManager, csManager);
+            break;
+        case 14:
+            webManager.findShortestPath(pipeManager, csManager);
+            break;
         case 0:
-            std::cout << "Exit." << std::endl;
+            std::cout << "Exiting program." << std::endl;
+            logFile.close();
             return 0;
         default:
-            std::cout << "Invalid choice." << std::endl;
+            std::cout << "Invalid choice. Please try again." << std::endl;
         }
     }
+
+    logFile.close();
+    return 0;
 }

@@ -5,6 +5,9 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include <queue>
+#include <limits>
+#include <functional>
 
 struct Connection {
     int startCSId;
@@ -14,7 +17,10 @@ struct Connection {
     Connection(int start, int end, int pipe) : startCSId(start), endCSId(end), pipeId(pipe) {}
 
     bool operator==(const Connection& other) const {
-        return startCSId == other.startCSId && endCSId == other.endCSId && pipeId == other.pipeId;
+        bool startEqual = (startCSId == other.startCSId);
+        bool endEqual = (endCSId == other.endCSId);
+        bool pipeEqual = (pipeId == other.pipeId);
+        return startEqual && endEqual && pipeEqual;
     }
 };
 
@@ -38,6 +44,12 @@ public:
 
     std::vector<int> topologicalSort() const;
     bool hasCycle() const;
+
+    // New methods for flow and path calculations
+    double calculatePipeCapacity(const Pipe& pipe) const;
+    double calculatePipeWeight(const Pipe& pipe) const;
+    double findMaxFlow(int source, int sink, const std::unordered_map<int, Pipe>& pipes) const;
+    std::vector<int> findShortestPath(int startCSId, int endCSId, const std::unordered_map<int, Pipe>& pipes) const;
 
 private:
     bool topologicalSortUtil(int v, std::unordered_map<int, bool>& visited,

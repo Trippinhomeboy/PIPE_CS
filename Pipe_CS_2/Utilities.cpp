@@ -20,6 +20,8 @@ void menuDisplay() {
     std::cout << "10) View connections" << std::endl;
     std::cout << "11) Topological sort" << std::endl;
     std::cout << "12) Check for cycles" << std::endl;
+    std::cout << "13) Calculate maximum flow" << std::endl;
+    std::cout << "14) Find shortest path" << std::endl;
     std::cout << "0) Exit" << std::endl;
 
     std::cout << std::setw(30) << std::setfill('=') << "" << std::endl;

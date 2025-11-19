@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 
 class Pipe {
 private:
@@ -13,6 +14,7 @@ private:
 
 public:
     static int maxId;
+    static const std::vector<double> allowedDiameters;
 
     Pipe();
     Pipe(const std::string& name, double length, double diameter, bool status = false);
@@ -32,7 +34,7 @@ public:
     void readFromConsole();
     void writeToConsole() const;
 
-  
+
     void saveToFile(std::ofstream& out) const;
     void loadFromFile(std::ifstream& in);
 

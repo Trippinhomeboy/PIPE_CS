@@ -9,7 +9,7 @@
 class WebManager {
 private:
     Web network;
-    const std::vector<double> allowedDiameters = { 500, 700, 1000, 1400 };
+    const std::vector<double> allowedDiameters = { 530, 720, 1020, 1220, 1420 };
 
 public:
     void addConnection(PipeManager& pipeManager, CSManager& csManager);
@@ -17,6 +17,10 @@ public:
     void displayConnections() const;
     void topologicalSort() const;
     void checkCycles() const;
+
+    // New methods for flow and path calculations
+    void calculateMaxFlow(PipeManager& pipeManager, CSManager& csManager) const;
+    void findShortestPath(PipeManager& pipeManager, CSManager& csManager) const;
 
     Web& getNetwork() { return network; }
     const Web& getNetwork() const { return network; }

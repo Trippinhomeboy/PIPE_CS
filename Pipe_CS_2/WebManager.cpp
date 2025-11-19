@@ -1,4 +1,4 @@
-#include "WebManager.h"
+﻿#include "WebManager.h"
 #include "Utilities.h"
 #include <iostream>
 #include <iomanip>
@@ -20,7 +20,7 @@ void WebManager::addConnection(PipeManager& pipeManager, CSManager& csManager) {
     }
 
     if (!hasAllowedPipes) {
-        std::cout << "No pipes with allowed diameters (500, 700, 1000, 1400 mm) available." << std::endl;
+        std::cout << "No pipes with allowed diameters (530, 720, 1020, 1220, 1420 mm) available." << std::endl;
         std::cout << "You need to create a pipe with allowed diameter first." << std::endl;
         return;
     }
@@ -64,12 +64,14 @@ void WebManager::addConnection(PipeManager& pipeManager, CSManager& csManager) {
     }
     std::cout << std::endl;
 
-    double chosenDiameter = inputInRange<double>("Enter pipe diameter to use: ", 500.0, 1400.0);
-
-    if (!isDiameterAllowed(chosenDiameter)) {
-        std::cout << "Error: Diameter " << chosenDiameter << "mm is not allowed. Use 500, 700, 1000 or 1400mm." << std::endl;
-        return;
+    // Let user choose from allowed diameters only
+    std::cout << "Choose diameter:" << std::endl;
+    for (size_t i = 0; i < allowedDiameters.size(); ++i) {
+        std::cout << (i + 1) << ") " << allowedDiameters[i] << "mm" << std::endl;
     }
+
+    int diameterChoice = inputInRange<int>("Enter your choice: ", 1, static_cast<int>(allowedDiameters.size()));
+    double chosenDiameter = allowedDiameters[diameterChoice - 1];
 
     std::vector<int> availablePipeIds;
     for (const auto& pipePair : pipeManager.getPipes()) {
@@ -184,6 +186,97 @@ void WebManager::checkCycles() const {
     }
 }
 
+void WebManager::calculateMaxFlow(PipeManager& pipeManager, CSManager& csManager) const {
+    if (network.getConnections().empty()) {
+        std::cout << "No connections in the network." << std::endl;
+        return;
+    }
+
+    csManager.displayAllCS();
+    int source = inputInRange<int>("Enter source CS ID: ", 1, CompressorStation::maxId);
+    int sink = inputInRange<int>("Enter sink CS ID: ", 1, CompressorStation::maxId);
+
+    if (csManager.getStations().find(source) == csManager.getStations().end()) {
+        std::cout << "Error: Source CS with ID " << source << " not found." << std::endl;
+        return;
+    }
+
+    if (csManager.getStations().find(sink) == csManager.getStations().end()) {
+        std::cout << "Error: Sink CS with ID " << sink << " not found." << std::endl;
+        return;
+    }
+
+    if (source == sink) {
+        std::cout << "Error: Source and sink cannot be the same." << std::endl;
+        return;
+    }
+
+    double maxFlow = network.findMaxFlow(source, sink, pipeManager.getPipes());
+    std::cout << "Maximum flow from CS" << source << " to CS" << sink << ": "
+        << maxFlow << " million m³ per day" << std::endl;
+}
+
+void WebManager::findShortestPath(PipeManager& pipeManager, CSManager& csManager) const {
+    if (network.getConnections().empty()) {
+        std::cout << "No connections in the network." << std::endl;
+        return;
+    }
+
+    csManager.displayAllCS();
+    int startCSId = inputInRange<int>("Enter start CS ID: ", 1, CompressorStation::maxId);
+    int endCSId = inputInRange<int>("Enter end CS ID: ", 1, CompressorStation::maxId);
+
+    if (csManager.getStations().find(startCSId) == csManager.getStations().end()) {
+        std::cout << "Error: Start CS with ID " << startCSId << " not found." << std::endl;
+        return;
+    }
+
+    if (csManager.getStations().find(endCSId) == csManager.getStations().end()) {
+        std::cout << "Error: End CS with ID " << endCSId << " not found." << std::endl;
+        return;
+    }
+
+    if (startCSId == endCSId) {
+        std::cout << "Start and end CS are the same." << std::endl;
+        return;
+    }
+
+    std::vector<int> path = network.findShortestPath(startCSId, endCSId, pipeManager.getPipes());
+
+    if (path.empty()) {
+        std::cout << "No path found from CS" << startCSId << " to CS" << endCSId << std::endl;
+    }
+    else {
+        std::cout << "Shortest path from CS" << startCSId << " to CS" << endCSId << ": ";
+        for (size_t i = 0; i < path.size(); ++i) {
+            std::cout << "CS" << path[i];
+            if (i != path.size() - 1) {
+                std::cout << " -> ";
+            }
+        }
+        std::cout << std::endl;
+
+        // Calculate total distance
+        double totalDistance = 0.0;
+        for (size_t i = 0; i < path.size() - 1; ++i) {
+            int from = path[i];
+            int to = path[i + 1];
+
+            // Find the pipe for this connection
+            for (const auto& conn : network.getConnections()) {
+                if (conn.startCSId == from && conn.endCSId == to) {
+                    auto pipeIt = pipeManager.getPipes().find(conn.pipeId);
+                    if (pipeIt != pipeManager.getPipes().end()) {
+                        totalDistance += pipeIt->second.getLength();
+                    }
+                    break;
+                }
+            }
+        }
+        std::cout << "Total distance: " << totalDistance << " km" << std::endl;
+    }
+}
+
 void WebManager::displayPipesByDiameter(const PipeManager& pipeManager) const {
     const auto& pipes = pipeManager.getPipes();
     if (pipes.empty()) {
@@ -213,7 +306,6 @@ void WebManager::displayPipesByDiameter(const PipeManager& pipeManager) const {
         std::cout << std::endl;
 
         for (const Pipe* pipe : pipeList) {
-           
             bool isUsed = false;
             for (const auto& conn : network.getConnections()) {
                 if (conn.pipeId == pipe->getId()) {

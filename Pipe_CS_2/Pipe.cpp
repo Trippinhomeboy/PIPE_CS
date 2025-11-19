@@ -2,8 +2,10 @@
 #include "Utilities.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
 int Pipe::maxId = 0;
+const std::vector<double> Pipe::allowedDiameters = { 530, 720, 1020, 1220, 1420 };
 
 Pipe::Pipe() : id(0), name(""), length(0), diameter(0), status(false) {
 }
@@ -23,19 +25,27 @@ void Pipe::readFromConsole() {
 
     length = inputInRange<double>("Enter pipe length (in km): ", 1.0, 10000.0);
 
-    
-    std::cout << "Allowed diameters for network connections: 500, 700, 1000, 1400 mm" << std::endl;
-    diameter = inputInRange<double>("Enter pipe diameter (in mm): ", 1.0, 10000.0);
-
-    
-    if (diameter != 500 && diameter != 700 && diameter != 1000 && diameter != 1400) {
-        std::cout << "Warning: Diameter " << diameter << "mm is not standard." << std::endl;
-        std::cout << "This pipe cannot be used in network connections." << std::endl;
+    // Display allowed diameters
+    std::cout << "Allowed diameters: ";
+    for (size_t i = 0; i < allowedDiameters.size(); ++i) {
+        std::cout << allowedDiameters[i] << "mm";
+        if (i != allowedDiameters.size() - 1) {
+            std::cout << ", ";
+        }
     }
+    std::cout << std::endl;
+
+    // Let user choose from allowed diameters only
+    std::cout << "Choose diameter:" << std::endl;
+    for (size_t i = 0; i < allowedDiameters.size(); ++i) {
+        std::cout << (i + 1) << ") " << allowedDiameters[i] << "mm" << std::endl;
+    }
+
+    int diameterChoice = inputInRange<int>("Enter your choice: ", 1, static_cast<int>(allowedDiameters.size()));
+    diameter = allowedDiameters[diameterChoice - 1];
 
     status = false;
 
-    
     if (id == 0) {
         id = ++maxId;
     }
@@ -47,12 +57,7 @@ void Pipe::writeToConsole() const {
     std::cout << "Pipe name: " << name << std::endl;
     std::cout << "Length (km): " << length << std::endl;
     std::cout << "Diameter (mm): " << diameter;
-    if (diameter == 500 || diameter == 700 || diameter == 1000 || diameter == 1400) {
-        std::cout << " (Standard - can be used in network)";
-    }
-    else {
-        std::cout << " (Non-standard - cannot be used in network)";
-    }
+    std::cout << " (Standard - can be used in network)";
     std::cout << std::endl;
     std::cout << "Repair status: " << (status ? "Yes" : "No") << std::endl << std::endl;
 }
@@ -68,7 +73,7 @@ void Pipe::saveToFile(std::ofstream& out) const {
 
 void Pipe::loadFromFile(std::ifstream& in) {
     std::string line;
-    std::getline(in, line); 
+    std::getline(in, line);
     std::getline(in, line);
     if (!line.empty()) id = std::stoi(line);
     if (id > Pipe::maxId) {
@@ -95,7 +100,7 @@ std::ostream& operator<<(std::ostream& out, const Pipe& pipe) {
 
 std::istream& operator>>(std::istream& in, Pipe& pipe) {
     std::string line;
-    std::getline(in, line); 
+    std::getline(in, line);
     std::getline(in, line);
     if (!line.empty()) pipe.id = std::stoi(line);
     if (pipe.id > Pipe::maxId) {
@@ -123,8 +128,8 @@ std::ofstream& operator<<(std::ofstream& out, const Pipe& pipe) {
 
 std::ifstream& operator>>(std::ifstream& in, Pipe& pipe) {
     std::string line;
-    std::getline(in, line); 
-    std::getline(in, line); 
+    std::getline(in, line);
+    std::getline(in, line);
     if (!line.empty()) pipe.id = std::stoi(line);
     if (pipe.id > Pipe::maxId) {
         Pipe::maxId = pipe.id;
