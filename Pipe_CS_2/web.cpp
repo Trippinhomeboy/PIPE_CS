@@ -152,10 +152,10 @@ bool Web::topologicalSortUtil(int v, std::unordered_map<int, bool>& visited,
 
 double Web::calculatePipeCapacity(const Pipe& pipe) const {
     if (pipe.getStatus()) {
-        return 0.0; // Pipe is under repair
+        return 0.0; 
     }
 
-    // Capacity data from table 1.1 (million m³ per day)
+   
     std::unordered_map<double, std::pair<double, double>> capacityData = {
         {1420, {90.0, 100.0}},
         {1220, {50.0, 60.0}},
@@ -167,27 +167,27 @@ double Web::calculatePipeCapacity(const Pipe& pipe) const {
     double diameter = pipe.getDiameter();
     auto it = capacityData.find(diameter);
     if (it != capacityData.end()) {
-        // Use average capacity for the diameter range
+        
         return (it->second.first + it->second.second) / 2.0;
     }
 
-    return 0.0; // Unknown diameter
+    return 0.0; 
 }
 
 double Web::calculatePipeWeight(const Pipe& pipe) const {
     if (pipe.getStatus()) {
-        return std::numeric_limits<double>::infinity(); // Pipe is under repair
+        return std::numeric_limits<double>::infinity(); 
     }
 
-    // Weight is simply the length of the pipe
+    
     return pipe.getLength();
 }
 
 double Web::findMaxFlow(int source, int sink, const std::unordered_map<int, Pipe>& pipes) const {
-    // Create residual graph
+    
     std::unordered_map<int, std::unordered_map<int, double>> residual;
 
-    // Build residual graph from connections
+    
     for (const auto& conn : connections) {
         double capacity = 0.0;
         auto pipeIt = pipes.find(conn.pipeId);
@@ -195,15 +195,15 @@ double Web::findMaxFlow(int source, int sink, const std::unordered_map<int, Pipe
             capacity = calculatePipeCapacity(pipeIt->second);
         }
         residual[conn.startCSId][conn.endCSId] = capacity;
-        // Initialize reverse edge with 0 capacity
+       
         residual[conn.endCSId][conn.startCSId] = 0.0;
     }
 
     double maxFlow = 0.0;
 
-    // Edmonds-Karp algorithm
+    
     while (true) {
-        // BFS to find augmenting path
+        
         std::unordered_map<int, int> parent;
         std::queue<int> q;
         q.push(source);
@@ -230,17 +230,17 @@ double Web::findMaxFlow(int source, int sink, const std::unordered_map<int, Pipe
         }
 
         if (!foundPath) {
-            break; // No more augmenting paths
+            break; 
         }
 
-        // Find bottleneck capacity
+        
         double pathFlow = std::numeric_limits<double>::infinity();
         for (int v = sink; v != source; v = parent[v]) {
             int u = parent[v];
             pathFlow = std::min(pathFlow, residual[u][v]);
         }
 
-        // Update residual capacities
+        
         for (int v = sink; v != source; v = parent[v]) {
             int u = parent[v];
             residual[u][v] -= pathFlow;
@@ -254,14 +254,14 @@ double Web::findMaxFlow(int source, int sink, const std::unordered_map<int, Pipe
 }
 
 std::vector<int> Web::findShortestPath(int startCSId, int endCSId, const std::unordered_map<int, Pipe>& pipes) const {
-    // Dijkstra's algorithm
+    
     std::unordered_map<int, double> dist;
     std::unordered_map<int, int> parent;
     std::priority_queue<std::pair<double, int>,
         std::vector<std::pair<double, int>>,
         std::greater<std::pair<double, int>>> pq;
 
-    // Initialize distances
+    
     for (const auto& conn : connections) {
         dist[conn.startCSId] = std::numeric_limits<double>::infinity();
         dist[conn.endCSId] = std::numeric_limits<double>::infinity();
@@ -277,14 +277,14 @@ std::vector<int> Web::findShortestPath(int startCSId, int endCSId, const std::un
         pq.pop();
 
         if (currentDist > dist[u]) {
-            continue; // Skip if we found a better path already
+            continue; 
         }
 
         if (u == endCSId) {
-            break; // Reached destination
+            break; 
         }
 
-        // Find all neighbors through connections
+        
         for (const auto& conn : connections) {
             if (conn.startCSId == u) {
                 int v = conn.endCSId;
@@ -304,10 +304,10 @@ std::vector<int> Web::findShortestPath(int startCSId, int endCSId, const std::un
         }
     }
 
-    // Reconstruct path
+    
     std::vector<int> path;
     if (dist.find(endCSId) == dist.end() || dist[endCSId] == std::numeric_limits<double>::infinity()) {
-        return path; // No path found
+        return path; 
     }
 
     for (int v = endCSId; v != -1; v = parent[v]) {
